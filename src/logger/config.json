@@ -2,30 +2,46 @@
     "version": 1,
     "formatters": {
         "default": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S.%fz"
+        },
+        "file_formatter": {
+            "format": "%(asctime)s - %(filename)s:%(lineno)d - %(name)s - %(levelname)s - %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S.%fz"
+        },
+        "console_formatter": {
+            "format": "%(levelname)s: %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S.%fz"
+        },
+        "graylog_formatter": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S.%fz"
         }
     },
     "handlers": {
         "file_handler": {
-            "class": "logging.FileHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "level": "DEBUG",
-            "formatter": "default",
-            "filename": "logs/app.log"
+            "formatter": "file_formatter",
+            "filename": "./logs/app.log",
+            "maxBytes": 100000,
+            "backupCount": 3
         },
         "console_handler": {
             "class": "logging.StreamHandler",
             "level": "WARNING",
-            "formatter": "default"
+            "formatter": "console_formatter"
         },
         "graylog_handler": {
             "class": "graypy.GELFUDPHandler",
+            "formatter": "graylog_formatter",
             "level": "INFO",
             "host": "localhost",
             "port": 12201
         }
     },
     "loggers": {
-        "": {
+        "root": {
             "level": "DEBUG",
             "handlers": ["file_handler", "console_handler", "graylog_handler"],
             "propagate": false
