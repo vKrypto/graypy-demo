@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "formatters": {
+        "default": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        }
+    },
+    "handlers": {
+        "file_handler": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "formatter": "default",
+            "filename": "logs/app.log"
+        },
+        "console_handler": {
+            "class": "logging.StreamHandler",
+            "level": "WARNING",
+            "formatter": "default"
+        },
+        "graylog_handler": {
+            "class": "graypy.GELFUDPHandler",
+            "level": "INFO",
+            "host": "localhost",
+            "port": 12201
+        }
+    },
+    "loggers": {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["file_handler", "console_handler", "graylog_handler"],
+            "propagate": false
+        }
+    }
+}
